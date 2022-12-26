@@ -4,7 +4,7 @@ Nama Lengkap                | NRP
 --------------------------- | -------------
 Fian Awamiry Maulana        | 5025201035  
 
-##Objek  
+## Objek  
 
 ## Referensi
 Disini saya menggunakan referensi dari ```WebGL 3D Geometry - Lathe```.  
