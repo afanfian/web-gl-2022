@@ -27,10 +27,8 @@
   varying vec3 v_normal;
   
   void main() {
-    // Multiply the position by the matrix.
     gl_Position = u_matrix * a_position;
   
-    // Pass the texcoord to the fragment shader.
     v_texcoord = a_texcoord;
     v_normal = a_normal;
   }
@@ -51,28 +49,20 @@
   varying vec3 v_surfaceToView;
   
   void main() {
-    // Multiply the position by the matrix.
     gl_Position = u_worldViewProjection * a_position;
   
-    // orient the normals and pass to the fragment shader
     v_normal = mat3(u_worldInverseTranspose) * a_normal;
   
-    // compute the world position of the surfoace
     vec3 surfaceWorldPosition = (u_world * a_position).xyz;
-  
-    // compute the vector of the surface to the light
-    // and pass it to the fragment shader
+
     v_surfaceToLight = u_lightWorldPosition - surfaceWorldPosition;
-  
-    // compute the vector of the surface to the view/camera
-    // and pass it to the fragment shader
+
     v_surfaceToView = u_viewWorldPosition - surfaceWorldPosition;
   }
   </script>
   <script id="normal-shader" type="notjs">
   precision mediump float;
   
-  // Passed in from the vertex shader.
   varying vec2 v_texcoord;
   varying vec3 v_normal;
   
@@ -85,7 +75,6 @@
   <script id="texture-shader" type="notjs">
   precision mediump float;
   
-  // Passed in from the vertex shader.
   varying vec2 v_texcoord;
   varying vec3 v_normal;
   
@@ -102,7 +91,6 @@
     precision mediump float;
   #endif
   
-  // Passed in from the vertex shader.
   varying vec3 v_normal;
   varying vec3 v_surfaceToLight;
   varying vec3 v_surfaceToView;
@@ -111,9 +99,6 @@
   uniform float u_shininess;
   
   void main() {
-    // because v_normal is a varying it's interpolated
-    // so it will not be a unit vector. Normalizing it
-    // will make it a unit vector again
     vec3 normal = normalize(v_normal);
     vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
     vec3 surfaceToViewDirection = normalize(v_surfaceToView);
@@ -127,11 +112,8 @@
   
     gl_FragColor = u_color;
   
-    // Lets multiply just the color portion (not the alpha)
-    // by the light
     gl_FragColor.rgb *= light;
   
-    // Just add in the specular
     gl_FragColor.rgb += specular;
   }
   </script>
